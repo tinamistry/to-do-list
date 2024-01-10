@@ -28,7 +28,7 @@ function SideBar() {
      <List sx = {{ ml : '-30px', mt: '50px'}}>
            
               <ListItem disablePadding>
-                <ListItemButton>
+                <ListItemButton to = "/">
                   <ListItemIcon>
                   <WbSunnyIcon sx = {{color: '#fac905', mr: '4px'}}/>
                   </ListItemIcon>
@@ -37,7 +37,7 @@ function SideBar() {
               </ListItem>
 
               <ListItem disablePadding>
-                <ListItemButton>
+                <ListItemButton to = "/future">
                   <ListItemIcon>
                   <CalendarTodayIcon sx = {{color: '#919191', mr: '4px'}}/>
                   </ListItemIcon>
