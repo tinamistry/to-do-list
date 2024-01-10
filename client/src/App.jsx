@@ -3,10 +3,10 @@ import React from 'react';
 import './App.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import SideBar from './components/SideBar'
 import Today from './components/Today'
 import Future from './components/Future'
 import Landing from './components/Landing'
+import Register from './components/Register'
 
 
 
@@ -26,6 +26,7 @@ const theme = createTheme({
         },
       },
     },
+
   
 }});
 
@@ -35,6 +36,7 @@ function App() {
     <div style={{ display: 'flex' }}>
         <BrowserRouter>
           <Routes>
+            <Route path = "/register" element = {<Register/>}/>
             <Route path = "/" element = {<Landing/>}/>
             <Route path="/today" element={<Today />} />
             <Route path="/future" element={<Future />} />

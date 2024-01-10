@@ -2,12 +2,19 @@
 .logo{
     height:50px;
     width:50px;
+
 }
+.navbar{
+    display:flex;
+    margin-left: 10px;
+}
+
+
 .landing{
+    display:flex;
     width: 100vw;
     height:100vh;
 }
-
 .login-card{
     display:flex;
     float:left;
