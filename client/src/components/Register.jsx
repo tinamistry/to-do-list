@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState }  from 'react';
 import { useNavigate } from "react-router-dom";
 import '../styles/register.css'
 import NavBar from './NavBar'
@@ -9,8 +9,38 @@ import { Typography, Box, Grid, TextField, Button, Divider } from '@mui/material
 
 const RegisterForm = () => {
     const navigate  = useNavigate();
+    const[firstName, setFirstName] = useState(" ")
+    const[lastName, setLastName] = useState(" ")
+    const[email, setEmail] = useState(" ")
+    const[password, setPassword] = useState(" ")
+    const[verifyPassword, setVerifyPassword] = useState(" ")
+
     const handleLoginButtonClick = () =>{
        navigate('/')
+    }
+
+    const handleFirstNameChange = (event) => {
+        setFirstName(event.target.value);
+    };
+
+    const handleLastNameChange = (event) =>{
+        setLastName(event.target.value)
+    }
+    
+    const handleEmailChange = (event) =>{
+        setEmail(event.target.value)
+    }
+
+    const handlePasswordChange = (event) =>{
+        setPassword(event.target.value)
+    }
+
+    const handlePasswordVerificationChange = (event) =>{
+        setVerifyPassword(event.target.value)
+    }
+
+    const verifyUserInput = () =>{
+
     }
  
   return (
@@ -29,20 +59,26 @@ const RegisterForm = () => {
                             <TextField 
                             id="standard-basic" 
                             label="First Name" 
-                            variant="standard" />
+                            variant="standard"
+                            value={firstName} 
+                            onChange={handleFirstNameChange}  />
                         </Grid>
                         <Grid item xs={4}>
                         <TextField 
                             id="standard-basic" 
                             label="Last Name" 
-                            variant="standard" />
+                            variant="standard"
+                            value={lastName} 
+                            onChange={handleLastNameChange}  />
                         </Grid>
                         <Grid item xs={8}>
                         <TextField 
                             fullWidth
                             id="standard-basic" 
                             label="Email" 
-                            variant="standard" />   
+                            variant="standard"
+                            value={email} 
+                            onChange={handleEmailChange}  />   
                         </Grid>
                         <Grid item xs={8}>
                          <TextField 
@@ -50,7 +86,9 @@ const RegisterForm = () => {
                             id="standard-basic" 
                             label="Password" 
                             type = "password"
-                            variant="standard" />  
+                            variant="standard"
+                            value={password} 
+                            onChange={handlePasswordChange} />  
                         </Grid>
                         <Grid item xs={8}>
                          <TextField 
@@ -58,10 +96,12 @@ const RegisterForm = () => {
                             id="standard-basic" 
                             label="Confirm Password" 
                             type = "password"
-                            variant="standard" />  
+                            variant="standard"
+                            value={verifyPassword} 
+                            onChange={handlePasswordVerificationChange} />  
                         </Grid>
                         <Grid item xs={8}>
-                            <Button fullWidth variant="contained">Register</Button>
+                            <Button fullWidth variant="contained" onClick = {verifyUserInput}>Register</Button>
                         </Grid>
                         <Grid item xs={8}>
                           <Divider>OR</Divider>
