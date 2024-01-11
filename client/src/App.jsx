@@ -3,10 +3,10 @@ import React from 'react';
 import './App.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Today from './components/Today'
 import Future from './components/Future'
 import Landing from './components/Landing'
 import Register from './components/Register'
+import Today from './components/Today';
 
 
 

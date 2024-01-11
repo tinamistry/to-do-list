@@ -9,11 +9,12 @@ import { Typography, Box, Grid, TextField, Button, Divider } from '@mui/material
 
 const RegisterForm = () => {
     const navigate  = useNavigate();
-    const[firstName, setFirstName] = useState(" ")
-    const[lastName, setLastName] = useState(" ")
-    const[email, setEmail] = useState(" ")
-    const[password, setPassword] = useState(" ")
-    const[verifyPassword, setVerifyPassword] = useState(" ")
+    const[firstName, setFirstName] = useState("")
+    const[lastName, setLastName] = useState("")
+    const[email, setEmail] = useState("")
+    const[password, setPassword] = useState("")
+    const[verifyPassword, setVerifyPassword] = useState("")
+    const[errors, setErrors] = useState(" ")
 
     const handleLoginButtonClick = () =>{
        navigate('/')
@@ -39,8 +40,27 @@ const RegisterForm = () => {
         setVerifyPassword(event.target.value)
     }
 
-    const verifyUserInput = () =>{
+    const validateForm = () =>{
+        let errors = {}
+        if(!firstName) errors.firstName = "First name is required"
+        if(!lastName) errors.lastName = "Last name is required"
+        if(!email) errors.email = "Email is required"
+        if(!password) errors.password = "Password is required"
+        if(password.length < 8 ) errors.password = "Password must be at least 8 characters"
+        if(password !== verifyPassword) errors.verifyPass = "Passwords do not match"
+        return errors;
 
+    }
+
+    const handleSubmit = (event) =>{
+        event.preventDefault();
+        const errors = validateForm();
+        if (Object.keys(errors).length === 0) {
+            console.log('user registered')
+          } else {
+            setErrors(errors);
+          }
+        
     }
  
   return (
@@ -61,7 +81,9 @@ const RegisterForm = () => {
                             label="First Name" 
                             variant="standard"
                             value={firstName} 
-                            onChange={handleFirstNameChange}  />
+                            onChange={handleFirstNameChange}
+                            error = {errors.firstName}
+                            helperText = {errors.firstName} />
                         </Grid>
                         <Grid item xs={4}>
                         <TextField 
@@ -69,7 +91,9 @@ const RegisterForm = () => {
                             label="Last Name" 
                             variant="standard"
                             value={lastName} 
-                            onChange={handleLastNameChange}  />
+                            onChange={handleLastNameChange}
+                            error = {errors.lastName}
+                            helperText = {errors.lastName}  />
                         </Grid>
                         <Grid item xs={8}>
                         <TextField 
@@ -78,7 +102,9 @@ const RegisterForm = () => {
                             label="Email" 
                             variant="standard"
                             value={email} 
-                            onChange={handleEmailChange}  />   
+                            onChange={handleEmailChange}
+                            error = {errors.email}
+                            helperText = {errors.email}  />   
                         </Grid>
                         <Grid item xs={8}>
                          <TextField 
@@ -88,7 +114,9 @@ const RegisterForm = () => {
                             type = "password"
                             variant="standard"
                             value={password} 
-                            onChange={handlePasswordChange} />  
+                            onChange={handlePasswordChange}
+                            error = {errors.password}
+                            helperText = {errors.password} />  
                         </Grid>
                         <Grid item xs={8}>
                          <TextField 
@@ -98,10 +126,12 @@ const RegisterForm = () => {
                             type = "password"
                             variant="standard"
                             value={verifyPassword} 
-                            onChange={handlePasswordVerificationChange} />  
+                            onChange={handlePasswordVerificationChange}
+                            error = {errors.verifyPass}
+                            helperText = {errors.verifyPass} />  
                         </Grid>
                         <Grid item xs={8}>
-                            <Button fullWidth variant="contained" onClick = {verifyUserInput}>Register</Button>
+                            <Button fullWidth variant="contained" onClick = {handleSubmit}>Register</Button>
                         </Grid>
                         <Grid item xs={8}>
                           <Divider>OR</Divider>

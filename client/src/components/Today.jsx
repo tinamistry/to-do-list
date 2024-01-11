@@ -1,5 +1,4 @@
 import React from 'react';
-import SideBar from './SideBar'
 import { Typography, IconButton, Icon, Link } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import Checkbox from '@mui/material/Checkbox';
