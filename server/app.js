@@ -22,7 +22,6 @@ app.use(cors({origin: true, credentials:true}));
 
 //routes
 const routes = require('./routes/test')
-app.use("/", tes)
 
 
 //port
