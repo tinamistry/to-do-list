@@ -4,17 +4,17 @@ import '../styles/register.css'
 import NavBar from './NavBar'
 import logo from '../assets/Logo.png'
 import { Typography, Box, Grid, TextField, Button, Divider } from '@mui/material';
-
-
+import {register} from '../request-api/auth-request-api'
 
 const RegisterForm = () => {
+
     const navigate  = useNavigate();
     const[firstName, setFirstName] = useState("")
     const[lastName, setLastName] = useState("")
     const[email, setEmail] = useState("")
     const[password, setPassword] = useState("")
     const[verifyPassword, setVerifyPassword] = useState("")
-    const[errors, setErrors] = useState(" ")
+    const[errors, setErrors] = useState({})
 
     const handleLoginButtonClick = () =>{
        navigate('/')
@@ -52,15 +52,17 @@ const RegisterForm = () => {
 
     }
 
-    const handleSubmit = (event) =>{
+    const handleSubmit = async (event) =>{
         event.preventDefault();
         const errors = validateForm();
         if (Object.keys(errors).length === 0) {
-            console.log('user registered')
-          } else {
-            setErrors(errors);
-          }
-        
+            try {
+                const response = await register(firstName, lastName, email, password);
+                console.log('Registration successful:', response.data);
+              } catch (error) {
+                console.error('Registration error:', error);
+              }
+            }
     }
  
   return (
@@ -82,7 +84,7 @@ const RegisterForm = () => {
                             variant="standard"
                             value={firstName} 
                             onChange={handleFirstNameChange}
-                            error = {errors.firstName}
+                            error = {!!errors.firstName}
                             helperText = {errors.firstName} />
                         </Grid>
                         <Grid item xs={4}>
@@ -92,7 +94,7 @@ const RegisterForm = () => {
                             variant="standard"
                             value={lastName} 
                             onChange={handleLastNameChange}
-                            error = {errors.lastName}
+                            error = {!!errors.lastName}
                             helperText = {errors.lastName}  />
                         </Grid>
                         <Grid item xs={8}>
@@ -103,7 +105,7 @@ const RegisterForm = () => {
                             variant="standard"
                             value={email} 
                             onChange={handleEmailChange}
-                            error = {errors.email}
+                            error = {!!errors.email}
                             helperText = {errors.email}  />   
                         </Grid>
                         <Grid item xs={8}>
@@ -115,7 +117,7 @@ const RegisterForm = () => {
                             variant="standard"
                             value={password} 
                             onChange={handlePasswordChange}
-                            error = {errors.password}
+                            error = {!!errors.password}
                             helperText = {errors.password} />  
                         </Grid>
                         <Grid item xs={8}>
@@ -127,7 +129,7 @@ const RegisterForm = () => {
                             variant="standard"
                             value={verifyPassword} 
                             onChange={handlePasswordVerificationChange}
-                            error = {errors.verifyPass}
+                            error = {!!errors.verifyPass}
                             helperText = {errors.verifyPass} />  
                         </Grid>
                         <Grid item xs={8}>
@@ -140,15 +142,9 @@ const RegisterForm = () => {
                             <Button onClick = {handleLoginButtonClick} fullWidth variant="contained">Login</Button>
                         </Grid>
                     </Grid>
-
             </Box>
           </div>
-   
-
-                
        </div>
-
-        
     </div>
   );
 };

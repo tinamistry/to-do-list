@@ -1,8 +1,10 @@
 const express = require("express")
 const router = express.Router();
-const {AuthController} = require("../controllers/auth-controllers");
+const { register, login } = require("../controllers/auth-controller"); // Updated import
 
-//api routes
+
+router.post('/register', register)
+router.post('/login', login)
 
 
 
