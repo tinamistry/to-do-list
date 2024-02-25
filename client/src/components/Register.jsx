@@ -59,6 +59,7 @@ const RegisterForm = () => {
             try {
                 const response = await register(firstName, lastName, email, password);
                 console.log('Registration successful:', response.data);
+                navigate('/')
               } catch (error) {
                 console.error('Registration error:', error);
               }

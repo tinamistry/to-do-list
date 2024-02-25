@@ -19,7 +19,6 @@ export const register = (firstName, lastName, email, password) =>{
     },
   }
   )}
-
 const apis = {
   register
 
