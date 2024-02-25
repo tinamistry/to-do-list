@@ -1,5 +1,7 @@
 import React from 'react';
-import SideBar from './SideBar'
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import { Typography, IconButton, Icon, Link } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import Checkbox from '@mui/material/Checkbox';
@@ -8,6 +10,18 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import '../styles/today.css'
 
 function Today() {
+    const navigate = useNavigate();
+    const [cookies, removeCookie] = useCookies([])
+
+    useEffect(() =>{
+        const verifyCookie = async () =>{
+            if(!cookies.token){
+                navigate('/')
+            }
+        };
+        verifyCookie();
+    }, [cookies, navigate, removeCookie])
+
 
     const handleItemClick = () =>{
         
@@ -22,9 +36,9 @@ function Today() {
                 <Checkbox className = "todo-checkmark" icon={<RadioButtonUncheckedIcon />} checkedIcon={<CheckCircleIcon />} /> 
                 <Typography className = "todo-text" onClick = {handleItemClick}
                     style={{
-                        textDecoration: 'underline', // add underline
-                        textDecorationColor: 'lightgrey', // set underline color
-                        color: 'black', // set text color
+                        textDecoration: 'underline', 
+                        textDecorationColor: 'lightgrey', 
+                        color: 'black', 
                      }}> get coffee </Typography>
                 </div>
             </div>
