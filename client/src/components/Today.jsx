@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { Typography, IconButton, Icon, Link } from '@mui/material';
+import SideBar from './SideBar'
 import AddIcon from '@mui/icons-material/Add';
 import Checkbox from '@mui/material/Checkbox';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -12,15 +13,27 @@ import '../styles/today.css'
 function Today() {
     const navigate = useNavigate();
     const [cookies, removeCookie] = useCookies([])
-
-    useEffect(() =>{
-        const verifyCookie = async () =>{
-            if(!cookies.token){
-                navigate('/')
-            }
+    const [userData, setUserData] = useState(null);
+    const token = localStorage.getItem('token');
+    const userDataJSON = localStorage.getItem('userData');
+     useEffect(() => {
+        const verifyCookie = async () => {
+          if (!cookies.token) {
+            navigate('/');
+          }
+    
+          if (cookies.token && localStorage.getItem('userData')) {
+            const data = JSON.parse(localStorage.getItem('userData'));
+            setUserData(data.user);
+            console.log('User Data:', data.user);
+          } else {
+            console.error('Token or User Data not found in cookies or local storage');
+          }
         };
+    
         verifyCookie();
-    }, [cookies, navigate, removeCookie])
+      }, [cookies.token]); // Only re-run the effect if 'cookies.token' or 'navigate' changes
+    
 
 
     const handleItemClick = () =>{
@@ -29,8 +42,11 @@ function Today() {
 
    return(
     <div className = "today" >
+        <SideBar user = {userData}/>
         <div className = "today-content">
-            <Typography variant = "h3" >today</Typography>
+            <div className = "title">
+                    <Typography variant = "h3" >today</Typography>
+            </div>
             <div className = "today-items-list">
                 <div className = "to-do-item">
                 <Checkbox className = "todo-checkmark" icon={<RadioButtonUncheckedIcon />} checkedIcon={<CheckCircleIcon />} /> 
@@ -41,12 +57,12 @@ function Today() {
                         color: 'black', 
                      }}> get coffee </Typography>
                 </div>
-            </div>
-            <div className = "add-new-todo-button">
+                <div className = "add-new-todo-button">
                 <IconButton>
                     <AddIcon sx = {{color:'lightslategrey'}}/>
                 </IconButton>
-                <Typography className = "add-todo-button-text" variant = "body1">Add todo</Typography>
+                <Typography className = "add-todo-button-text" variant = "body1">Add to-do</Typography>
+            </div>
             </div>
         </div>
     </div>
