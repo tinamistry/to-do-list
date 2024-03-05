@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { Typography, IconButton, Icon, Link } from '@mui/material';
 import SideBar from './SideBar'
+import NewTodoForm from './NewTodoForm';
 import AddIcon from '@mui/icons-material/Add';
 import Checkbox from '@mui/material/Checkbox';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -14,6 +15,8 @@ function Today() {
     const navigate = useNavigate();
     const [cookies, removeCookie] = useCookies([])
     const [userData, setUserData] = useState(null);
+    const[openNewTodoForm, setOpenNewTodoForm] = useState(false)
+
     const token = localStorage.getItem('token');
     const userDataJSON = localStorage.getItem('userData');
      useEffect(() => {
@@ -35,9 +38,17 @@ function Today() {
       }, [cookies.token]); // Only re-run the effect if 'cookies.token' or 'navigate' changes
     
 
-
     const handleItemClick = () =>{
         
+    }
+
+    const addNewItem = () =>{
+      setOpenNewTodoForm(true)
+        
+    }
+
+    const handleClose = () =>{
+      setOpenNewTodoForm(false)
     }
 
    return(
@@ -58,13 +69,14 @@ function Today() {
                      }}> get coffee </Typography>
                 </div>
                 <div className = "add-new-todo-button">
-                <IconButton>
+                <IconButton onClick = {addNewItem}>
                     <AddIcon sx = {{color:'lightslategrey'}}/>
                 </IconButton>
                 <Typography className = "add-todo-button-text" variant = "body1">Add to-do</Typography>
             </div>
             </div>
         </div>
+        {openNewTodoForm && <NewTodoForm open = {openNewTodoForm} handleClose = {handleClose} user = {userData}/>}
     </div>
    );
 }

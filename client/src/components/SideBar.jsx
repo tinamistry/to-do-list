@@ -14,7 +14,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 function SideBar({ user }) {
   // Check if user data is available
   if (!user || !user.firstName) {
-    // Return a loading state or fallback value
     return (
       <div className="sidebar">
         <Drawer
@@ -26,7 +25,6 @@ function SideBar({ user }) {
           }}
         >
           <Typography sx={{ ml: '10px', mt: '10px' }}> Lists</Typography>
-          {/* Placeholder content or loading state */}
           <div>Loading...</div>
         </Drawer>
       </div>
