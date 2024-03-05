@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Drawer from '@mui/material/Drawer';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import List from '@mui/material/List';
@@ -7,12 +7,13 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Typography } from '@mui/material';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import NewListForm from './NewListForm'
 
 function SideBar({ user }) {
-  // Check if user data is available
+  const [openForm, setOpenForm] = useState(false)
+
   if (!user || !user.firstName) {
     return (
       <div className="sidebar">
@@ -30,6 +31,9 @@ function SideBar({ user }) {
       </div>
     );
   }
+  const openListForm = () =>{setOpenForm(true) }
+  const closeListForm = () => {setOpenForm(false)}
+  
 
   const drawerWidth = 240;
 
@@ -54,20 +58,12 @@ function SideBar({ user }) {
             </ListItemButton>
           </ListItem>
 
-          <ListItem disablePadding>
-            <ListItemButton to="/future">
-              <ListItemIcon>
-                <CalendarTodayIcon sx={{ color: '#919191', mr: '4px' }} />
-              </ListItemIcon>
-              <ListItemText primary={'future'} />
-            </ListItemButton>
-          </ListItem>
         </List>
 
         <List sx={{ ml: '-30px', mt: '50px' }}>
           <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
+            <ListItemButton onClick = {openListForm}>
+              <ListItemIcon >
                 <AddIcon sx={{ color: '#919191', mr: '4px' }} />
               </ListItemIcon>
               <ListItemText primary={'new list'} />
@@ -83,6 +79,7 @@ function SideBar({ user }) {
           </ListItem>
         </List>
       </Drawer>
+      {openForm && <NewListForm open = {openForm} handleClose = {closeListForm} user = {user}/>}
     </div>
   );
 }
