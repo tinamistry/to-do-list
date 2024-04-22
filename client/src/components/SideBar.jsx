@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Drawer from '@mui/material/Drawer';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import List from '@mui/material/List';
@@ -10,9 +10,26 @@ import { Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import NewListForm from './NewListForm'
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+axios.defaults.withCredentials = true;
+const baseURL = 'http://localhost:8080/api/list';
+const api = axios.create({
+  baseURL: baseURL,
+  withCredentials: true,
+});
 
-function SideBar({ user }) {
+function SideBar({ user, onListItemClick  }) {
   const [openForm, setOpenForm] = useState(false)
+  const[listNames, setListNames] = useState([])
+
+  useEffect(() => {
+    // Fetch list names only if user is available
+    if (user && user._id) {
+      getNames();
+
+    }
+  }, [user]); // Add user to the dependency array
 
   if (!user || !user.firstName) {
     return (
@@ -31,10 +48,24 @@ function SideBar({ user }) {
       </div>
     );
   }
+  const getNames = async () => {
+    try {
+      const response = await api.get(`/getListNames/${user._id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = response.data;
+      setListNames(data.names)
+    } catch (error) {
+      console.error("Error sending GET request:", error);
+    }
+  };
+  
+
   const openListForm = () =>{setOpenForm(true) }
   const closeListForm = () => {setOpenForm(false)}
   
-
   const drawerWidth = 240;
 
   return (
@@ -48,19 +79,17 @@ function SideBar({ user }) {
         }}
       >
         <Typography sx={{ ml: '10px', mt: '10px' }}> {user.firstName}'s Lists</Typography>
-        <List sx={{ ml: '-30px', mt: '50px' }}>
-          <ListItem disablePadding>
-            <ListItemButton to="/">
-              <ListItemIcon>
-                <WbSunnyIcon sx={{ color: '#fac905', mr: '4px' }} />
-              </ListItemIcon>
-              <ListItemText primary={'today'} />
-            </ListItemButton>
-          </ListItem>
 
-        </List>
-
-        <List sx={{ ml: '-30px', mt: '50px' }}>
+        <List sx={{ ml: '-5px', mt: '10px'}}>
+        {listNames.map((listName, index) => (
+            <ListItem key={index} disablePadding>
+              <ListItemButton onClick={() => onListItemClick(listName)} > 
+                <ListItemText primary={listName} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+          </List>
+        <List sx={{ ml: '-30px' }}>
           <ListItem disablePadding>
             <ListItemButton onClick = {openListForm}>
               <ListItemIcon >

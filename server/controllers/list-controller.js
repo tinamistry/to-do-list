@@ -4,7 +4,6 @@ const List = require('../models/list-model')
 
 const addNewList = async (req, res) =>{
     try{
-        console.log("in controller")
         const{userId, listName} = req.body
         const list = new List({user:userId, name: listName})
         await list.save()
@@ -22,11 +21,33 @@ const addNewList = async (req, res) =>{
         res.status(201) .json({ message: "List Added Successfully", success: true, list });
     }
     catch(error){
-        res.status(500).json({message: 'Adding Lisr Failed ' + error})
+        res.status(500).json({message: 'Adding List Failed ' + error})
     }
+}
+
+const getListNames = async(req, res) => {
+    try{
+        const { userId } = req.params;
+        const user = await User.findById(userId)
+        console.log(user)
+        const lists = user.lists
+        console.log(lists)
+        const names = []
+        for(i = 0; i < lists.length; i++){
+            const currentList = await List.findById(lists[i])
+            names.push(currentList.name)
+        }
+        console.log(names)
+        res.status(201).json({ names });
+    }
+    catch(error){
+        res.status(500).json({message: "Finding lists failed"})
+    }
+
 }
 
 
 module.exports = {
-    addNewList
+    addNewList, 
+    getListNames
 };
