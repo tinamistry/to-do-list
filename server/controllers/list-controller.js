@@ -29,15 +29,12 @@ const getListNames = async(req, res) => {
     try{
         const { userId } = req.params;
         const user = await User.findById(userId)
-        console.log(user)
         const lists = user.lists
-        console.log(lists)
         const names = []
-        for(i = 0; i < lists.length; i++){
+        for(i = 1; i < lists.length; i++){
             const currentList = await List.findById(lists[i])
             names.push(currentList.name)
         }
-        console.log(names)
         res.status(201).json({ names });
     }
     catch(error){
@@ -46,8 +43,29 @@ const getListNames = async(req, res) => {
 
 }
 
+const getListItems = async(req, res) =>{
+    try{
+        const { listName } = req.params;
+        const list = await List.findOne({ name: listName });
+        const listItems = list.todos
+        const items = []
+        for(i = 0; i < listItems.length; i++){
+            const id = listItems[i]
+            const todo = await ToDo.findById(id)
+            items.push(todo)
+        }
+        res.status(201).json({ items });
+    }
+    catch(error){
+        res.status(500).json({message: "Finding lists items failed"})
+    }
+
+    
+}
+
 
 module.exports = {
     addNewList, 
-    getListNames
+    getListNames, 
+    getListItems
 };

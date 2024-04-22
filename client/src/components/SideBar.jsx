@@ -57,6 +57,7 @@ function SideBar({ user, onListItemClick  }) {
       });
       const data = response.data;
       setListNames(data.names)
+      console.log(listNames)
     } catch (error) {
       console.error("Error sending GET request:", error);
     }

@@ -9,8 +9,14 @@ import AddIcon from '@mui/icons-material/Add';
 import Checkbox from '@mui/material/Checkbox';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-
 import '../styles/today.css'
+import axios from 'axios';
+axios.defaults.withCredentials = true;
+const baseURL = 'http://localhost:8080/api/list';
+const api = axios.create({
+  baseURL: baseURL,
+  withCredentials: true,
+});
 
 function Today() {
     const navigate = useNavigate();
@@ -18,6 +24,7 @@ function Today() {
     const [userData, setUserData] = useState(null);
     const[openNewTodoForm, setOpenNewTodoForm] = useState(false)
     const [selectedList, setSelectedList] = useState("today");
+    const[listItems, setListItems] = useState(null)
 
 
      useEffect(() => {
@@ -41,10 +48,28 @@ function Today() {
         
     }
 
-    const handleListItemClick = (listName) => {
+    const handleListNameClick = (listName) => {
       setSelectedList(listName);
+      getListItems(listName)
       console.log(selectedList)
     };
+
+    const getListItems = async (listName) =>{
+      console.log(listName);
+      try {
+        const response = await api.get(`/getListItems/${listName}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const data = response.data;
+        console.log(data.items)
+        setListItems(data.items)
+      } catch (error) {
+        console.error("Error sending GET request:", error);
+      }
+
+    }
 
     const addNewItem = () =>{
       setOpenNewTodoForm(true)
@@ -57,7 +82,7 @@ function Today() {
 
    return(
     <div className = "today" >
-        <SideBar user = {userData} onListItemClick={handleListItemClick}/>
+        <SideBar user = {userData} onListItemClick={handleListNameClick}/>
         <div className = "today-content">
             <div className = "title">
                     <Typography variant = "h3" >{selectedList}</Typography>
@@ -80,7 +105,7 @@ function Today() {
             </div>
             </div>
         </div>
-        {openNewTodoForm && <NewTodoForm open = {openNewTodoForm} handleClose = {handleClose} user = {userData}/>}
+        {openNewTodoForm && <NewTodoForm open = {openNewTodoForm} handleClose = {handleClose} user = {userData} listName = {selectedList}/>}
     </div>
    );
 }

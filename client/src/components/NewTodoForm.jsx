@@ -18,7 +18,7 @@ const api = axios.create({
   withCredentials: true,
 });
 
-function NewTodoForm({open, handleClose, user}) {
+function NewTodoForm({open, handleClose, user, listName}) {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     
@@ -46,13 +46,13 @@ function NewTodoForm({open, handleClose, user}) {
       }
 
       const handleSubmit = async(event) =>{
+  
         event.preventDefault()
-        console.log(title)
-        console.log(description)
+  
         try{
           const response = await api.post('/addToDo', {
             userId: user._id, 
-            listName: 'Today',
+            listName: listName,
             title: title, 
             description: description
           }, {
