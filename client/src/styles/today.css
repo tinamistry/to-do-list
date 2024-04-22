@@ -26,7 +26,7 @@
 
 .to-do-item{
     margin-left: -10px;
-    display:flex;
+    margin-top: -10px;
 
 }
 
@@ -37,7 +37,7 @@
 
 .add-new-todo-button{
     display:flex;
-    margin-left: -10px;
+    margin-left: -20px;
 }
 
 .add-todo-button-text{

@@ -46,9 +46,8 @@ function NewTodoForm({open, handleClose, user, listName}) {
       }
 
       const handleSubmit = async(event) =>{
-  
+
         event.preventDefault()
-  
         try{
           const response = await api.post('/addToDo', {
             userId: user._id, 
@@ -61,7 +60,7 @@ function NewTodoForm({open, handleClose, user, listName}) {
             },
           })
           const data = response.data; 
-          console.log(data)
+          handleClose()
         } catch(error){
           console.log("error sending post request")
         }
