@@ -17,7 +17,7 @@ function Today() {
     const [cookies, removeCookie] = useCookies([])
     const [userData, setUserData] = useState(null);
     const[openNewTodoForm, setOpenNewTodoForm] = useState(false)
-    const [selectedList, setSelectedList] = useState(null);
+    const [selectedList, setSelectedList] = useState("today");
 
 
      useEffect(() => {

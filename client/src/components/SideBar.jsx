@@ -80,16 +80,24 @@ function SideBar({ user, onListItemClick  }) {
       >
         <Typography sx={{ ml: '10px', mt: '10px' }}> {user.firstName}'s Lists</Typography>
 
-        <List sx={{ ml: '-5px', mt: '10px'}}>
+        <List sx={{mt: '10px'}}>
+        <ListItem disablePadding sx = {{ml: '-25px'}}> 
+                <ListItemButton to = "/today">
+                  <ListItemIcon>
+                  <WbSunnyIcon sx = {{color: '#fac905', mr: '4px'}}/>
+                  </ListItemIcon>
+                  <ListItemText primary={"today"} />
+                </ListItemButton>
+         </ListItem>
         {listNames.map((listName, index) => (
-            <ListItem key={index} disablePadding>
+            <ListItem key={index} disablePadding  sx = {{ml: '10px'}}>
               <ListItemButton onClick={() => onListItemClick(listName)} > 
                 <ListItemText primary={listName} />
               </ListItemButton>
             </ListItem>
           ))}
           </List>
-        <List sx={{ ml: '-30px' }}>
+        <List sx={{ ml: '-25px' }}>
           <ListItem disablePadding>
             <ListItemButton onClick = {openListForm}>
               <ListItemIcon >
