@@ -9,6 +9,9 @@ import AddIcon from '@mui/icons-material/Add';
 import Checkbox from '@mui/material/Checkbox';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 import '../styles/today.css'
 import axios from 'axios';
 axios.defaults.withCredentials = true;
@@ -24,7 +27,7 @@ function Today() {
     const [userData, setUserData] = useState(null);
     const[openNewTodoForm, setOpenNewTodoForm] = useState(false)
     const [selectedList, setSelectedList] = useState("today");
-    const[listItems, setListItems] = useState(null)
+    const[listItems, setListItems] = useState([])
 
 
      useEffect(() => {
@@ -41,8 +44,12 @@ function Today() {
           }
         };
         verifyCookie();
-      }, [cookies.token]); // Only re-run the effect if 'cookies.token' or 'navigate' changes
+      }, [cookies.token, listItems]); // Only re-run the effect if 'cookies.token' or 'navigate' changes
   
+      useEffect(() => {
+        getListItems(selectedList); // Fetch initial list items when component mounts
+      }, [selectedList]); // Re-fetch list items when selected list changes
+
 
     const handleItemClick = () =>{
         
@@ -51,7 +58,7 @@ function Today() {
     const handleListNameClick = (listName) => {
       setSelectedList(listName);
       getListItems(listName)
-      console.log(selectedList)
+      
     };
 
     const getListItems = async (listName) =>{
@@ -63,8 +70,9 @@ function Today() {
           },
         });
         const data = response.data;
-        console.log(data.items)
         setListItems(data.items)
+        console.log(data)
+        console.log(listItems)
       } catch (error) {
         console.error("Error sending GET request:", error);
       }
@@ -76,9 +84,10 @@ function Today() {
         
     }
 
-    const handleClose = () =>{
-      setOpenNewTodoForm(false)
-    }
+    const handleClose = () => {
+      setOpenNewTodoForm(false);
+      getListItems(selectedList);
+    };
 
    return(
     <div className = "today" >
@@ -89,14 +98,23 @@ function Today() {
             </div>
             <div className = "today-items-list">
                 <div className = "to-do-item">
-                <Checkbox className = "todo-checkmark" icon={<RadioButtonUncheckedIcon />} checkedIcon={<CheckCircleIcon />} /> 
-                <Typography className = "todo-text" onClick = {handleItemClick}
-                    style={{
-                        textDecoration: 'underline', 
-                        textDecorationColor: 'lightgrey', 
-                        color: 'black', 
-                     }}> get coffee </Typography>
-                </div>
+                  {listItems.map((item, index) =>(
+                        <div className = "to-do-item">
+
+                          <List>
+                            <ListItem disablePadding>
+                                <Checkbox className = "todo-checkmark" icon={<RadioButtonUncheckedIcon />} checkedIcon={<CheckCircleIcon />} /> 
+                                <ListItemText primary = {item.title}/>
+                            </ListItem>
+                          </List>
+
+                  
+    
+                     </div>
+
+                  ))}
+               </div>
+
                 <div className = "add-new-todo-button">
                 <IconButton onClick = {addNewItem}>
                     <AddIcon sx = {{color:'lightslategrey'}}/>
