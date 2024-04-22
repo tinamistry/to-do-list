@@ -1,4 +1,5 @@
 const User = require('../models/user-model');
+const List = require('../models/list-model')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require("dotenv").config();
@@ -9,6 +10,10 @@ const register = async (req, res) =>{
         const{firstName, lastName, email, password } = req.body
         const hashedPassword = await bcrypt.hash(password,10)
         const user = new User({firstName, lastName, email, passwordHash:hashedPassword})
+        const list = new List({user: user._id, name: 'today'})
+        await list.save()
+        user.lists.push(list)
+        console.log("registered user", user)
         await user.save()
             .then(user => {
                 console.log('User saved successfully:', user);

@@ -42,8 +42,9 @@ function Landing() {
           },
         });
       const data = response.data; 
-      console.log(data)
-      localStorage.setItem('token', data.token); //we have the token saved with the user id 
+      const userDataJSON = JSON.stringify(data);
+      localStorage.setItem('token', data.token); //we have the token saved with the user id
+      localStorage.setItem('userData', userDataJSON); 
       navigate('/today')
       console.log('Response from server:', data);
     } catch (error) {
